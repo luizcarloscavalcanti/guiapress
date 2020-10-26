@@ -1,0 +1,53 @@
+<%- include ("../../partials/header.ejs") %>
+<%- include ("../../partials/navbar.ejs") %>
+
+<body>
+    <div class="container">
+        <hr>
+        <h2>Artigos</h2>
+        <a class="btn btn-success" href="/admin/articles/new">Criar novo artigo</a>
+        <hr>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Título</th>
+                    <th>Slug</th>
+                    <th>Categoria</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% articles.forEach(article => { %>
+                <tr>
+                    <td><%= article.id %></td>
+                    <td><%= article.title %></td>
+                    <td><%= article.slug %></td>
+                    <td><%= article.category.title %></td>
+                    <td style="display: inline-flex;">
+                        <a href="/admin/articles/edit/<%= article.id %>" class="btn btn-warning">Editar</a>
+                        <form method="POST" action="/articles/delete" onsubmit="alertDelete(event, this)"
+                            style="margin-left: 5px;">
+                            <input type="hidden" name="id" value="<%= article.id %>">
+                            <button class="btn btn-danger">Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<%- include ("../../partials/footer.ejs") %>
+
+<script>
+    function alertDelete(event, form) {
+        event.preventDefault();
+        var decision = confirm("Você deseja excluir este artigo?");
+        if (decision) {
+            form.submit();
+            console.log("Artigo deletado!");
+        }
+    }
+</script>
